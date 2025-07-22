@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PleasureX | Redirecting to Product</title>
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .container {
+      background-color: #1e1e1e;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      max-width: 420px;
+      width: 90%;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .logo {
+      width: 130px;
+      margin-bottom: 25px;
+    }
+
+    h1 {
+      font-size: 1.6em;
+      margin-bottom: 10px;
+      color: #FCDD21;
+    }
+
+    p {
+      font-size: 1.05em;
+      margin-bottom: 25px;
+      color: #ddd;
+    }
+
+    button {
+      background-color: #FCDD21;
+      color: #121212;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1em;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+
+    button:hover {
+      background-color: #e6c91b;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 1.4em;
+      }
+
+      p {
+        font-size: 0.95em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <img class="logo" src="pleasurexlogo.png" alt="PleasureX Logo" />
+    <h1>Get Ready to Shop</h1>
+    <p id="productMessage">Click the button below to view your selected product.</p>
+    <button id="goButton">Shop Now</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const productName = urlParams.get('product');
+
+    if (!productName) {
+      document.getElementById('productMessage').textContent = "Product not specified in URL.";
+      document.getElementById('goButton').style.display = 'none';
+    } else {
+      // Rebuild query params excluding "product"
+      const paramsToPass = new URLSearchParams();
+      urlParams.forEach((value, key) => {
+        if (key !== 'product') {
+          paramsToPass.append(key, value);
+        }
+      });
+
+      const redirectUrl = `https://pleasurex.in/products/${productName}${paramsToPass.toString() ? '?' + paramsToPass.toString() : ''}`;
+
+      // Update product message dynamically
+      document.getElementById('productMessage').textContent = `Redirecting you to "${productName}" product page.`;
+
+      document.getElementById('goButton').addEventListener('click', () => {
+        window.location.href = redirectUrl;
+      });
+    }
+  </script>
+</body>
+
+</html>
