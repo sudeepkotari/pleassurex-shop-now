@@ -117,9 +117,14 @@
     const urlParams = new URLSearchParams(window.location.search);
     const productName = urlParams.get('product');
 
+    const goButton = document.getElementById('goButton');
+    const productMessage = document.getElementById('productMessage');
+
+    let redirectUrl;
+
     if (!productName) {
-      document.getElementById('productMessage').textContent = "Product not specified in URL.";
-      document.getElementById('goButton').style.display = 'none';
+      redirectUrl = "https://pleasurex.in";
+      productMessage.textContent = "No specific product selected. Click below to visit our store.";
     } else {
       // Rebuild query params excluding "product"
       const paramsToPass = new URLSearchParams();
@@ -129,16 +134,15 @@
         }
       });
 
-      const redirectUrl = `https://pleasurex.in/products/${productName}${paramsToPass.toString() ? '?' + paramsToPass.toString() : ''}`;
-
-      // Update product message dynamically
-      document.getElementById('productMessage').textContent = `Redirecting you to "${productName}" product page.`;
-
-      document.getElementById('goButton').addEventListener('click', () => {
-        window.location.href = redirectUrl;
-      });
+      redirectUrl = `https://pleasurex.in/products/${productName}${paramsToPass.toString() ? '?' + paramsToPass.toString() : ''}`;
+      productMessage.textContent = `Redirecting you to "${productName}" product page.`;
     }
+
+    goButton.addEventListener('click', () => {
+      window.location.href = redirectUrl;
+    });
   </script>
+
 </body>
 
 </html>
